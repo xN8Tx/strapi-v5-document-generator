@@ -60,7 +60,7 @@
 
 ##### **Step 6: Document History**
 
-- [ ] **Create a Collection Type** for document history:
+- [x] **Create a Collection Type** for document history:
   - Fields: Title, description, document URL, TemplateID, fileName, creation date, and last updated date.
 
 ##### **Step 7: Plugin Configuration**
