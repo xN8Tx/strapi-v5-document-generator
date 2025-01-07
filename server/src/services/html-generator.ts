@@ -4,11 +4,6 @@ import { ScenarioType } from 'src/types';
 
 import { renderString } from 'nunjucks';
 
-// TODO: Create config
-const head = ``;
-const header = '';
-const footer = '';
-
 const htmlGenerator = ({ strapi }: { strapi: Core.Strapi }) => ({
   async generateTemplate(scenarioId: string) {
     const scenarios = strapi.plugin(PLUGIN_ID).service('scenario').get();
@@ -30,6 +25,10 @@ const htmlGenerator = ({ strapi }: { strapi: Core.Strapi }) => ({
     const templateContent = template.content
       .replace(/(\n)/g, '') // Delete line breaks
       .replace(/<(\w+)(\s*[^>]*)>\s*<\/\1>/, ''); // Delete empty html tags
+
+    const head = strapi.plugin(PLUGIN_ID).config('head') ?? '';
+    const header = strapi.plugin(PLUGIN_ID).config('header') ?? '';
+    const footer = strapi.plugin(PLUGIN_ID).config('footer') ?? '';
 
     return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">${head}</head><body>${header}${templateContent}${footer}</body></html>`;
   },

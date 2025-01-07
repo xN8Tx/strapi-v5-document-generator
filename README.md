@@ -65,7 +65,7 @@
 
 ##### **Step 7: Plugin Configuration**
 
-- [ ] Add customizable parts to the configuration:
+- [x] Add customizable parts to the configuration:
   - Define template sections like `Head`, `Header`, and `Footer`.
 
 ##### **Step 8: PDF Generation**
