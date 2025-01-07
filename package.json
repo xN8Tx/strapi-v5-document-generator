@@ -33,17 +33,17 @@
   "dependencies": {
     "@strapi/design-system": "^2.0.0-rc.14",
     "@strapi/icons": "^2.0.0-rc.14",
-    "fs-extra": "^11.2.0",
+    "nunjucks": "^3.2.4",
     "react-intl": "^7.0.1",
     "react-query": "^3.39.3"
   },
   "devDependencies": {
+    "@types/nunjucks": "^3.2.6",
     "@strapi/sdk-plugin": "^5.2.7",
     "@strapi/strapi": "^5.4.2",
     "@strapi/typescript-utils": "^5.4.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@types/fs-extra": "^11.0.4",
     "prettier": "^3.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -52,6 +52,7 @@
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
+    "@sklinet/strapi-plugin-tinymce": "^1.1.4",
     "@strapi/sdk-plugin": "^5.2.7",
     "@strapi/strapi": "^5.4.2",
     "react": "^18.3.1",
