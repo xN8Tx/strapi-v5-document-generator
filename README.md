@@ -46,7 +46,7 @@
 - [x] **Set Up a Folders**:
 
   - Create folder generator in the `extensions` folder to house logic and tools for generating documents.
-  - Create folder generator in the `public` folder to house documents.
+  - ~~Create folder generator in the `public` folder to house documents.~~
   - Add this to the application registry.
 
 - [x] **Implement a Service** to:
