@@ -12,12 +12,4 @@ export default () => ({
       await fs.mkdir(folderPath);
     }
   },
-  async generateDocumentsFolder() {
-    const folderPath = path.join(strapi.dirs.static.public, PLUGIN_ID);
-    try {
-      await fs.access(folderPath);
-    } catch {
-      await fs.mkdir(folderPath);
-    }
-  },
 });
