@@ -1,6 +1,4 @@
-import scenario from 'src/services/scenario';
 import { PLUGIN_ID } from '../constants';
-import template from './template';
 
 export default {
   kind: 'collectionType',
