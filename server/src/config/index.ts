@@ -1,4 +1,4 @@
-import { PLUGIN_ID } from 'src/constants';
+import { PLUGIN_ID } from '../constants';
 
 export default {
   default: {
