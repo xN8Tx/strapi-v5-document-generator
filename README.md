@@ -54,7 +54,7 @@
 
 ##### **Step 5: HTML Generation**
 
-- [ ] **Develop a Service**:
+- [x] **Develop a Service**:
   - Fetch content from `getContent` in the scenario logic.
   - Generate a complete HTML string based on templates and scenario data.
 

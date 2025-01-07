@@ -129,7 +129,8 @@ node_modules
 !.yarn/versions
 .pnp.*
 yarn-error.log
-
+.yalc
+yalc.lock
 
 ############################
 # Tests
