@@ -7,11 +7,21 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     const scenarios = Array.isArray(scenarioOrArray) ? scenarioOrArray : [scenarioOrArray];
 
     scenarios.forEach((scenario) => {
-      if (!scenario.title || !scenario.templateSlug || typeof scenario.getContent !== 'function') {
+      if (
+        !scenario.id ||
+        !scenario.title ||
+        !scenario.templateSlug ||
+        typeof scenario.getContent !== 'function'
+      ) {
         throw new Error(
-          'Invalid scenario: "title", "templateSlug", and "getContent" are required.'
+          'Invalid scenario: "id", "title", "templateSlug", and "getContent" are required.'
         );
       }
+
+      if (this._scenarios.find((s) => s.id === scenario.id)) {
+        throw new Error(`Scenario with id "${scenario.id}" already exists.`);
+      }
+
       this._scenarios.push(scenario);
     });
   },

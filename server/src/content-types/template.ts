@@ -27,8 +27,8 @@ export default {
       required: true,
     },
     content: {
-      type: 'blocks',
-      required: true,
+      type: 'customField',
+      customField: 'plugin::tinymce.tinymce',
     },
   },
 };
