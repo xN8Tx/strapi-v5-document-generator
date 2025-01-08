@@ -36,10 +36,15 @@
   - Add a `getContent` method:
     - This function fetches and organizes the scenario-specific data required for template generation.
 
-##### **Step 3: Content Types for Scenarios**
+##### **Step 3: Content Types**
 
 - [x] **Create a Scenario Content Type**:
+
   - Organize scenarios as reusable and customizable entities.
+
+- [x] **Create a History Content Type**:
+
+  - Store and manage document generating history.
 
 ##### **Step 4: Generator Services**
 
@@ -48,6 +53,8 @@
   - Create folder generator in the `extensions` folder to house logic and tools for generating documents.
   - Create folder generator in the `public` folder to house documents.
   - Add this to the application registry.
+
+- [x] \*\*Set Up
 
 - [x] **Implement a Service** to:
   - Save scenarios to plugin.

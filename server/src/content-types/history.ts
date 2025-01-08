@@ -13,23 +13,31 @@ export default {
     'content-manager': {
       visible: false,
     },
+    'content-type-builder': {
+      visible: false,
+    },
   },
   attributes: {
     title: {
       type: 'string',
       required: true,
     },
+    file: {
+      type: 'media',
+      multiple: false,
+      allowedTypes: ['files'],
+      required: true,
+    },
     template: {
       type: 'relation',
       relation: 'oneToOne',
       target: `plugin::${PLUGIN_ID}.${PLUGIN_ID}-template`,
-    },
-    file: {
-      type: 'media',
       required: true,
     },
-    scenarioId: {
-      type: 'string',
+    scenario: {
+      type: 'relation',
+      relation: 'oneToOne',
+      target: `plugin::${PLUGIN_ID}.${PLUGIN_ID}-scenario`,
       required: true,
     },
   },
