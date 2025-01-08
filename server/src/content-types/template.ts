@@ -17,18 +17,26 @@ export default {
     title: {
       type: 'string',
       required: true,
+      minLength: 1,
+      configurable: false,
     },
     description: {
       type: 'text',
+      configurable: false,
     },
     slug: {
       type: 'uid',
       targetField: 'title',
       required: true,
+      minLength: 1,
+      configurable: false,
     },
     content: {
       type: 'customField',
       customField: 'plugin::tinymce.tinymce',
+      required: true,
+      minLength: 1,
+      configurable: false,
     },
   },
 };

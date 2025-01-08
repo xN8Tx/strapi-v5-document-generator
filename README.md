@@ -54,8 +54,6 @@
   - Create folder generator in the `public` folder to house documents.
   - Add this to the application registry.
 
-- [x] \*\*Set Up
-
 - [x] **Implement a Service** to:
   - Save scenarios to plugin.
 
