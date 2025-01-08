@@ -6,6 +6,7 @@ const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
   const folderGenerator = strapi.plugin(PLUGIN_ID).service('folderGenerator');
 
   await folderGenerator.generatePluginFolder();
+  await folderGenerator.generateDocumentsFolder();
 };
 
 export default bootstrap;
