@@ -7,6 +7,11 @@ const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
 
   await folderGenerator.generatePluginFolder();
   await folderGenerator.generateDocumentsFolder();
+  await folderGenerator.generateUploadPluginFolder();
+
+  // Save scenarios to DB
+  const scenario = strapi.plugin(PLUGIN_ID).service('scenario');
+  await scenario.check();
 };
 
 export default bootstrap;
