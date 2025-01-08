@@ -34,14 +34,16 @@
     "@strapi/design-system": "^2.0.0-rc.14",
     "@strapi/icons": "^2.0.0-rc.14",
     "nunjucks": "^3.2.4",
+    "puppeteer": "^23.11.1",
     "react-intl": "^7.0.1",
     "react-query": "^3.39.3"
   },
   "devDependencies": {
-    "@types/nunjucks": "^3.2.6",
+    "@types/puppeteer": "^5.4.7",
     "@strapi/sdk-plugin": "^5.2.7",
     "@strapi/strapi": "^5.4.2",
     "@strapi/typescript-utils": "^5.4.2",
+    "@types/nunjucks": "^3.2.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "prettier": "^3.4.1",

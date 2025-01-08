@@ -8,7 +8,7 @@ export type ExtraFields = {
 };
 
 export type ScenarioType = {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   templateSlug: string;

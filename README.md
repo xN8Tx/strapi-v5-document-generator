@@ -75,7 +75,7 @@
 
 ##### **Step 8: PDF Generation**
 
-- [ ] **Generate PDFs**:
+- [x] **Generate PDFs**:
   - Use the generated HTML to produce a PDF.
   - Save the PDF to the `public` folder and log it in the database.
 
