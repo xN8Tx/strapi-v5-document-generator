@@ -9,23 +9,15 @@ import fs from 'fs/promises';
 import { PLUGIN_ID } from '../constants';
 
 const generator = ({ strapi }: { strapi: Core.Strapi }) => ({
-  async generateTemplate(scenarioId: number) {
-    const scenarios = strapi.plugin(PLUGIN_ID).service('scenario').get();
-    const scenario = scenarios.find((s) => s.id === scenarioId) as ScenarioType | undefined;
-
-    if (!scenario) {
-      throw new Error(`Scenario with id "${scenarioId}" not found.`);
-    }
-
-    const templates = await strapi
+  async generateTemplate(templateDocumentId: string) {
+    const template = await strapi
       .documents(`plugin::${PLUGIN_ID}.${PLUGIN_ID}-template`)
-      .findMany({ filters: { slug: scenario.templateSlug } });
+      .findOne({ documentId: templateDocumentId });
 
-    if (templates.length === 0) {
-      throw new Error(`Template with slug "${scenario.templateSlug}" not found.`);
+    if (!template) {
+      throw new Error(`Template with slug "${templateDocumentId}" not found.`);
     }
 
-    const template = templates[0];
     const templateContent = template.content
       .replace(/(\n)/g, '') // Delete line breaks
       .replace(/<(\w+)(\s*[^>]*)>\s*<\/\1>/, ''); // Delete empty html tags
@@ -36,39 +28,52 @@ const generator = ({ strapi }: { strapi: Core.Strapi }) => ({
 
     return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">${head}</head><body>${header}${templateContent}${footer}</body></html>`;
   },
-  async generateHTML(scenarioId: number, extraData: any = {}) {
-    const scenarios = strapi.plugin(PLUGIN_ID).service('scenario').get();
-    const scenario = scenarios.find((s) => s.id === scenarioId) as ScenarioType | undefined;
-
-    if (!scenario) {
-      throw new Error(`Scenario with id "${scenarioId}" not found.`);
-    }
-
-    const template = await this.generateTemplate(scenarioId);
-    const content = await scenario.getContent(strapi, extraData);
-
-    const html = await new Promise((res, rej) => {
+  async generateHTML(template: string, content: any = {}) {
+    return await new Promise((res, rej) => {
       renderString(template, content, (err, html) => {
         if (err) rej(err);
         res(html);
       });
     });
-
-    return html;
   },
-  async generatePDF(scenarioId: number, extraData: any = {}) {
-    // TODO: Normal hash generator
-    const filename = extraData.title + Date.now() + '.pdf';
-
-    const htmlContent = (await this.generateHTML(scenarioId, extraData)) as string;
+  async generatePDF(html: string, filename: string) {
     const documentPath = path.join(strapi.dirs.static.public, PLUGIN_ID, filename);
 
     // Generate PDF from HTML string
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.setContent(htmlContent);
+    await page.setContent(html);
     await page.pdf({ path: documentPath, format: 'A4' });
     await browser.close();
+
+    return documentPath;
+  },
+  async generate(scenarioId: number, extraData: any = {}) {
+    const scenariosInstants = strapi.plugin(PLUGIN_ID).service('scenario').get();
+    const scenarioInstant = scenariosInstants.find((s) => s.id === scenarioId) as
+      | ScenarioType
+      | undefined;
+
+    if (!scenarioInstant) {
+      throw new Error(`Scenario with id "${scenarioId}" not found.`);
+    }
+
+    const scenariosFromDB = await strapi
+      .documents(`plugin::${PLUGIN_ID}.${PLUGIN_ID}-scenario`)
+      .findMany({ filters: { id: scenarioId }, populate: ['template'] });
+    const scenarioFromDB = scenariosFromDB[0];
+
+    // Prepare content for template
+    const content = await scenarioInstant.getContent(strapi, extraData);
+    const templateDocumentId = scenarioFromDB.template.documentId;
+    // Prepare filename for pdf file
+    // TODO: Normal hash generator
+    const filename = extraData.title + Date.now() + '.pdf';
+
+    // Generate
+    const template = (await this.generateTemplate(templateDocumentId)) as string;
+    const html = (await this.generateHTML(template, content)) as string;
+    const documentPath = (await this.generatePDF(html, filename)) as string;
 
     // Save PDF to upload folder
     const stats = await fs.stat(documentPath);
@@ -99,6 +104,28 @@ const generator = ({ strapi }: { strapi: Core.Strapi }) => ({
         template: scenario[0].template,
       },
     });
+
+    return history;
+  },
+  async delete(historyId: string) {
+    const history = await strapi
+      .documents(`plugin::${PLUGIN_ID}.${PLUGIN_ID}-history`)
+      .findOne({ documentId: historyId, populate: ['file'] });
+
+    await strapi
+      .documents(`plugin::${PLUGIN_ID}.${PLUGIN_ID}-history`)
+      .delete({ documentId: historyId, populate: ['file'] });
+
+    // @ts-ignore
+    const fileId = history.file.documentId;
+    const file = await strapi.documents('plugin::upload.file').findOne({
+      documentId: fileId,
+    });
+    await strapi.documents('plugin::upload.file').delete({ documentId: fileId });
+
+    // @ts-ignore
+    const documentPath = path.join(strapi.dirs.static.public, PLUGIN_ID, file.hash);
+    await fs.unlink(documentPath);
 
     return history;
   },
